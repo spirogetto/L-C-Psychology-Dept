@@ -203,7 +203,7 @@ body::before {
       <button class="g-menu" onclick="gotoSelect()">↩ Menu</button>
     </div>
   </div>
-  <div class="g-progress"><div class="g-prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="g-progress" style="display:none"><div class="g-prog-fill" id="progFill" style="width:0%"></div></div>
   <div class="house-area">
     <div class="house-hint">Tap a 🟢 room to move there</div>
     <div class="house" id="houseGrid"></div>
@@ -438,7 +438,6 @@ function checkInteractions(){
     const flee=ROOMS[G.pos[goal.target]].adj;
     G.pos[goal.target]=flee[Math.floor(Math.random()*flee.length)];
     updateHUD();
-    if(G.score>=CFG[G.player].winScore){ setTimeout(()=>endGame(true),600); }
     break;
   }
 }
@@ -465,7 +464,7 @@ function loseLife(){
   G.lives--; showNotif('💔 BUSTED!','bad');
   G.pos[G.player]=safeRoom();
   addLog('🚨 -1 life! Moved to safety.','bad');
-  if(G.lives<=0){ setTimeout(()=>endGame(false),700); }
+  if(G.lives<=0){ setTimeout(()=>endGame(),700); }
   else{ renderHouse(); updateHUD(); renderLog(); }
 }
 
@@ -512,14 +511,14 @@ function showNotif(text,type,roomId){
   setTimeout(()=>n.remove(),1300);
 }
 
-function endGame(won){
-  clearNT(); G.phase=won?'won':'lost';
-  const cfg=CFG[G.player],msgs=won?cfg.wins:cfg.loses;
-  document.getElementById('endEm').textContent=won?'🏆':'💔';
+function endGame(){
+  clearNT(); G.phase='lost';
+  const cfg=CFG[G.player];
+  document.getElementById('endEm').textContent='💔';
   const t=document.getElementById('endTitle');
-  t.textContent=won?'YOU WIN!':'GAME OVER'; t.className=won?'win':'lose';
-  document.getElementById('endSub').textContent=msgs[Math.floor(Math.random()*msgs.length)];
-  document.getElementById('endScore').textContent='Score: '+G.score+' pts';
+  t.textContent='GAME OVER'; t.className='lose';
+  document.getElementById('endSub').textContent=cfg.loses[Math.floor(Math.random()*cfg.loses.length)];
+  document.getElementById('endScore').textContent='Final Score: '+G.score+' pts';
   show('endScreen');
 }
 
