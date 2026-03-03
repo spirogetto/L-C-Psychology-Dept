@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>💘 Love & Chaos</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Nunito:wght@600;800&display=swap" rel="stylesheet"/>
 <style>
@@ -14,986 +14,503 @@
   --yellow: #ffe94a;
   --green: #00c853;
   --red: #ff1744;
-  --blue: #2979ff;
-  --shadow: 4px 4px 0 var(--ink);
-  --shadow-lg: 6px 6px 0 var(--ink);
+  --sh: 4px 4px 0 var(--ink);
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--ink);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ======= HALFTONE BG ======= */
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; overflow:hidden; font-family:'Nunito',sans-serif; background:var(--ink); touch-action:manipulation; }
 body::before {
-  content:'';
-  position: fixed;
-  inset:0;
-  background-image: radial-gradient(circle, #ff3d7f22 1px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events:none;
-  z-index:0;
+  content:''; position:fixed; inset:0;
+  background-image:radial-gradient(circle,#ff3d7f1a 1px,transparent 1px);
+  background-size:22px 22px; pointer-events:none; z-index:0;
 }
 
-/* ======= SELECT SCREEN ======= */
-#selectScreen {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px 16px 40px;
+/* SCREENS */
+.screen { position:fixed; inset:0; display:none; flex-direction:column; z-index:10; overflow:hidden; }
+.screen.active { display:flex; }
+
+/* SELECT */
+#selectScreen { overflow-y:auto; background:var(--ink); align-items:center; padding:22px 14px 40px; }
+.title-block { text-align:center; margin-bottom:18px; }
+.title-block h1 {
+  font-family:'Bangers',cursive; font-size:clamp(3rem,14vw,6rem);
+  color:var(--yellow); letter-spacing:5px;
+  text-shadow:4px 4px 0 var(--pink),8px 8px 0 rgba(0,0,0,.5); line-height:1;
 }
-.title-wrap {
-  text-align: center;
-  margin-bottom: 28px;
-}
-.title-wrap h1 {
-  font-family: 'Bangers', cursive;
-  font-size: clamp(3rem, 10vw, 6rem);
-  color: var(--yellow);
-  letter-spacing: 4px;
-  text-shadow: 5px 5px 0 var(--pink), 10px 10px 0 var(--ink);
-  line-height: 1;
-}
-.title-wrap .tagline {
-  font-family: 'Permanent Marker', cursive;
-  color: #ff9ebc;
-  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
-  margin-top: 6px;
-  letter-spacing: 1px;
-}
-.char-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 16px;
-  max-width: 860px;
-  width: 100%;
-}
+.title-block p { font-family:'Permanent Marker',cursive; color:#ff9ebc; font-size:clamp(.78rem,3vw,.95rem); margin-top:6px; }
+.char-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; width:100%; max-width:500px; }
 .char-card {
-  background: var(--cream);
-  border: 4px solid var(--ink);
-  border-radius: 18px;
-  padding: 20px 16px;
-  cursor: pointer;
-  box-shadow: var(--shadow-lg);
-  transition: transform .12s, box-shadow .12s;
-  position: relative;
-  overflow: hidden;
+  background:var(--cream); border:3.5px solid var(--ink); border-radius:16px;
+  padding:14px 11px; cursor:pointer; box-shadow:var(--sh);
+  position:relative; overflow:hidden; transition:transform .1s;
 }
-.char-card::before {
-  content:'';
-  position:absolute;
-  top:0; left:0; right:0; height:8px;
-  border-radius: 14px 14px 0 0;
-}
-.char-card.c-moin::before    { background: #2979ff; }
-.char-card.c-sakia::before   { background: #ff3d7f; }
-.char-card.c-jayanta::before { background: #795548; }
-.char-card.c-adity::before   { background: #ff9800; }
-.char-card:hover { transform: translate(-3px,-4px); box-shadow: 9px 10px 0 var(--ink); }
-.char-card:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
-.c-avatar { font-size: 3.2rem; text-align:center; margin: 10px 0 6px; }
-.c-name {
-  font-family: 'Bangers', cursive;
-  font-size: 1.7rem;
-  letter-spacing: 1px;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.c-moin .c-name    { color: #2979ff; }
-.c-sakia .c-name   { color: #ff3d7f; }
-.c-jayanta .c-name { color: #795548; }
-.c-adity .c-name   { color: #ff9800; }
-.c-goals { font-size: 0.75rem; line-height: 1.65; color: #444; }
-.c-goals li { margin-bottom: 3px; list-style: none; }
-.c-danger {
-  margin-top: 10px;
-  background: #fff0f0;
-  border: 2px solid var(--red);
-  border-radius: 8px;
-  padding: 5px 8px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--red);
-}
-.select-footer {
-  margin-top: 20px;
-  font-family: 'Permanent Marker', cursive;
-  color: #555;
-  font-size: 0.85rem;
-  text-align:center;
-}
+.char-card:active { transform:scale(.95); }
+.char-card::before { content:''; position:absolute; top:0; left:0; right:0; height:7px; border-radius:12px 12px 0 0; }
+.c-moin::before    { background:#2979ff; }
+.c-sakia::before   { background:#ff3d7f; }
+.c-jayanta::before { background:#795548; }
+.c-adity::before   { background:#ff9800; }
+.c-avatar { font-size:2.5rem; text-align:center; margin:8px 0 3px; }
+.c-name { font-family:'Bangers',cursive; font-size:1.45rem; letter-spacing:1px; text-align:center; margin-bottom:7px; }
+.c-moin .c-name    { color:#2979ff; }
+.c-sakia .c-name   { color:#ff3d7f; }
+.c-jayanta .c-name { color:#795548; }
+.c-adity .c-name   { color:#ff9800; }
+.c-goals { font-size:.68rem; line-height:1.55; color:#444; }
+.c-goals li { list-style:none; margin-bottom:2px; }
+.c-danger { margin-top:8px; background:#fff0f0; border:2px solid var(--red); border-radius:8px; padding:4px 7px; font-size:.67rem; font-weight:800; color:var(--red); }
+.select-tip { margin-top:14px; font-family:'Permanent Marker',cursive; color:#ff9ebc; font-size:.76rem; text-align:center; padding:0 10px; }
 
-/* ======= GAME SCREEN ======= */
-#gameScreen {
-  display: none;
-  flex-direction: column;
-  min-height: 100vh;
-  position: relative;
-  z-index: 1;
+/* GAME */
+#gameScreen { background:var(--ink); }
+.g-header {
+  background:var(--ink); border-bottom:3px solid var(--pink);
+  padding:8px 12px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; z-index:20;
 }
-.game-header {
-  background: var(--ink);
-  border-bottom: 4px solid var(--pink);
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.player-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Bangers', cursive;
-  font-size: 1.4rem;
-  color: var(--yellow);
-  letter-spacing: 1px;
-}
-.player-badge .avatar { font-size: 1.8rem; }
-.hud-right { display: flex; align-items:center; gap:12px; flex-wrap:wrap; }
-.hud-pill {
-  background: #2a1520;
-  border: 2.5px solid #ff3d7f44;
-  border-radius: 30px;
-  padding: 4px 14px;
-  font-family: 'Bangers', cursive;
-  font-size: 1.2rem;
-  color: var(--cream);
-  letter-spacing: 1px;
-}
-.hud-pill span { color: var(--yellow); }
-.menu-btn {
-  background: transparent;
-  border: 2px solid #555;
-  border-radius: 8px;
-  color: #888;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  cursor: pointer;
-}
-.menu-btn:hover { border-color: #ccc; color: #ccc; }
+.g-player { display:flex; align-items:center; gap:6px; font-family:'Bangers',cursive; font-size:1.25rem; color:var(--yellow); letter-spacing:1px; }
+.g-player .av { font-size:1.6rem; }
+.g-hud { display:flex; align-items:center; gap:7px; }
+.pill { background:#2a1520; border:2px solid #ff3d7f44; border-radius:20px; padding:3px 11px; font-family:'Bangers',cursive; font-size:1rem; color:var(--cream); }
+.pill b { color:var(--yellow); }
+.g-menu { background:transparent; border:2px solid #555; border-radius:8px; color:#888; font-family:'Nunito',sans-serif; font-size:.72rem; font-weight:800; padding:3px 9px; cursor:pointer; }
 
-.game-body {
-  display: flex;
-  flex: 1;
-  gap: 12px;
-  padding: 14px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
+.g-progress { height:6px; background:#2a1520; flex-shrink:0; }
+.g-prog-fill { height:100%; background:linear-gradient(90deg,var(--pink),#ff9800); transition:width .4s ease; }
 
-/* ======= HOUSE ======= */
-.house-wrap { flex: 1; min-width: 260px; }
-.house-title {
-  font-family: 'Permanent Marker', cursive;
-  color: #ff9ebc;
-  font-size: 0.85rem;
-  margin-bottom: 8px;
-  text-align:center;
-}
-.house {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, auto);
-  gap: 6px;
-}
+/* HOUSE */
+.house-area { flex:1; padding:9px 9px 5px; display:flex; flex-direction:column; overflow:hidden; min-height:0; }
+.house-hint { font-family:'Permanent Marker',cursive; color:#ff9ebc; font-size:.7rem; text-align:center; margin-bottom:5px; }
+.house { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(2,1fr); gap:6px; flex:1; min-height:0; }
 .room {
-  border: 3.5px solid var(--ink);
-  border-radius: 14px;
-  padding: 10px 8px;
-  min-height: 110px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform .15s, box-shadow .15s;
-  position: relative;
-  cursor: default;
+  border:3px solid var(--ink); border-radius:13px;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  padding:7px 3px 5px; position:relative; cursor:default;
+  transition:transform .1s; overflow:hidden; min-height:0;
 }
-.room.reachable {
-  cursor: pointer;
-  border-color: var(--green);
-  box-shadow: 0 0 0 3px #00c85344;
-  animation: reachablePulse 1.1s ease-in-out infinite;
+.room.reachable { cursor:pointer; border-color:var(--green); animation:rpulse 1.1s ease-in-out infinite; }
+.room.current { border-color:var(--pink); border-width:3.5px; }
+.room.reachable:active { transform:scale(.93); }
+@keyframes rpulse {
+  0%,100%{box-shadow:0 0 0 2px #00c85322} 50%{box-shadow:0 0 0 5px #00c85355}
 }
-.room.current {
-  border-color: var(--pink);
-  box-shadow: 0 0 0 3px var(--pink-soft);
-}
-.room.reachable:hover { transform: scale(1.04); }
-@keyframes reachablePulse {
-  0%,100% { box-shadow: 0 0 0 2px #00c85322; }
-  50%      { box-shadow: 0 0 0 5px #00c85366; }
-}
-.room-icon { font-size: 1.7rem; }
-.room-name {
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: #333;
-  text-align: center;
-  margin-top: 2px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-.here-badge {
-  font-size: 0.6rem;
-  background: var(--pink);
-  color:#fff;
-  border-radius: 6px;
-  padding: 1px 5px;
-  font-weight: 800;
-  margin-top: 2px;
-}
-.room-chars {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 3px;
-  margin-top: 6px;
-}
-.char-token {
-  position: relative;
-  font-size: 1.55rem;
-  cursor: default;
-  animation: tokenFloat 2.5s ease-in-out infinite;
-}
-.char-token:nth-child(2) { animation-delay: .4s; }
-.char-token:nth-child(3) { animation-delay: .8s; }
-.char-token:nth-child(4) { animation-delay:1.2s; }
-@keyframes tokenFloat {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
-}
-.char-token .tip {
-  display: none;
-  position: absolute;
-  bottom: 110%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--ink);
-  color: var(--cream);
-  border-radius: 6px;
-  padding: 2px 7px;
-  font-size: 0.58rem;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 800;
-  white-space: nowrap;
-  z-index: 50;
-  pointer-events: none;
-}
-.char-token:hover .tip { display: block; }
-.char-token.is-player { filter: drop-shadow(0 0 5px var(--yellow)); }
+.room-icon { font-size:clamp(1.2rem,4vw,1.7rem); }
+.room-name { font-size:clamp(.48rem,1.7vw,.63rem); font-weight:800; color:#333; text-align:center; text-transform:uppercase; letter-spacing:.4px; margin-top:1px; }
+.you-badge { font-size:.52rem; background:var(--pink); color:#fff; border-radius:5px; padding:1px 4px; font-weight:800; margin-top:2px; }
+.room-chars { display:flex; flex-wrap:wrap; justify-content:center; gap:1px; margin-top:3px; }
+.tok { font-size:clamp(.95rem,3.5vw,1.35rem); animation:tf 2.5s ease-in-out infinite; line-height:1; }
+.tok:nth-child(2){animation-delay:.3s} .tok:nth-child(3){animation-delay:.6s} .tok:nth-child(4){animation-delay:.9s}
+@keyframes tf { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+.tok.me { filter:drop-shadow(0 0 4px var(--yellow)); }
+.tok-wrap { display:flex; flex-direction:column; align-items:center; }
+.tok-name { font-size:clamp(.4rem,1.3vw,.52rem); font-weight:800; color:#555; text-align:center; line-height:1; }
+@keyframes flashRoom { 0%{background-color:#fffde0 !important} 100%{} }
+.room.npc-flash { animation:flashRoom .45s ease-out; }
 
-/* ======= SIDE PANEL ======= */
-.side-panel {
-  width: 210px;
-  min-width: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.panel-box {
-  background: var(--cream);
-  border: 3.5px solid var(--ink);
-  border-radius: 14px;
-  padding: 12px;
-  box-shadow: var(--shadow);
-}
-.panel-box h3 {
-  font-family: 'Bangers', cursive;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  color: var(--ink);
-  margin-bottom: 8px;
-  padding-bottom: 4px;
-  border-bottom: 2px solid #ddd;
-}
-.goal-row {
-  font-size: 0.73rem;
-  line-height: 1.6;
-  margin-bottom: 2px;
-  padding: 3px 6px;
-  border-radius: 6px;
-}
-.goal-row.active   { background: #e8fff0; border-left: 3px solid var(--green); }
-.goal-row.blocked  { background: #fff5e0; border-left: 3px solid #ff9800; }
-.danger-row {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--red);
-  background: #fff0f0;
-  border-radius: 6px;
-  padding: 4px 6px;
-  margin-top: 4px;
-  border-left: 3px solid var(--red);
-}
+/* BOTTOM PANEL */
+.bottom-panel { flex-shrink:0; background:var(--cream); border-top:3.5px solid var(--ink); display:flex; flex-direction:column; max-height:37vh; }
+.tab-bar { display:flex; border-bottom:2.5px solid var(--ink); }
+.tab { flex:1; padding:9px 4px; font-family:'Bangers',cursive; font-size:.92rem; letter-spacing:.5px; text-align:center; cursor:pointer; background:var(--cream); border:none; color:#888; transition:background .1s; }
+.tab.active { background:var(--pink); color:#fff; }
+.tab-content { flex:1; overflow-y:auto; padding:10px 12px; }
+.tab-pane { display:none; }
+.tab-pane.active { display:block; }
 
-.progress-wrap { margin-top: 8px; }
-.prog-label { font-size: 0.68rem; font-weight: 800; color: #666; margin-bottom: 3px; }
-.prog-bar {
-  height: 12px;
-  background: #eee;
-  border-radius: 6px;
-  border: 2px solid var(--ink);
-  overflow: hidden;
-}
-.prog-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--pink) 0%, #ff9800 100%);
-  border-radius: 4px;
-  transition: width .4s ease;
-}
+.goal-row { font-size:.74rem; font-weight:700; padding:5px 8px; border-radius:8px; margin-bottom:5px; background:#f0fff5; border-left:3px solid var(--green); color:#114422; }
+.danger-row { font-size:.71rem; font-weight:800; color:var(--red); background:#fff0f0; border-left:3px solid var(--red); border-radius:8px; padding:5px 8px; margin-top:6px; }
+.wait-btn { font-family:'Bangers',cursive; font-size:1rem; letter-spacing:1px; padding:9px 14px; background:var(--yellow); border:3px solid var(--ink); border-radius:12px; cursor:pointer; box-shadow:var(--sh); width:100%; margin-top:8px; transition:transform .1s; }
+.wait-btn:active { transform:scale(.96); }
 
-.wait-btn {
-  font-family: 'Bangers', cursive;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  padding: 9px 16px;
-  background: var(--yellow);
-  border: 3.5px solid var(--ink);
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  width: 100%;
-  transition: transform .1s, box-shadow .1s;
-}
-.wait-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
-.wait-btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
-
-/* Event log */
-.event-log {
-  max-height: 170px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--pink) #ffd6e7;
-}
-.ev {
-  font-size: 0.7rem;
-  line-height: 1.4;
-  padding: 4px 7px;
-  border-radius: 7px;
-  animation: slideIn .25s ease-out;
-  font-weight: 700;
-}
-@keyframes slideIn {
-  from { opacity:0; transform: translateX(-8px); }
-  to   { opacity:1; transform: translateX(0); }
-}
+.ev { font-size:.69rem; font-weight:700; line-height:1.4; padding:4px 7px; border-radius:7px; margin-bottom:4px; animation:slideIn .2s ease-out; }
+@keyframes slideIn { from{opacity:0;transform:translateX(-6px)} to{opacity:1;transform:none} }
 .ev.good { background:#e8fff0; border-left:3px solid var(--green); color:#005522; }
 .ev.bad  { background:#fff0f0; border-left:3px solid var(--red);   color:#880011; }
 .ev.info { background:#f0f4ff; border-left:3px solid #aaa;         color:#334; }
 .ev.npc  { background:#fafafa; border-left:3px solid #ddd;         color:#888; font-style:italic; }
 
-/* ======= NOTIFICATION POP ======= */
+.char-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid #eee; }
+.char-row:last-child { border:none; }
+.cr-em { font-size:1.3rem; }
+.cr-name { font-family:'Bangers',cursive; font-size:.93rem; letter-spacing:.5px; }
+.cr-loc { color:#888; font-size:.67rem; }
+.cr-moin    .cr-name { color:#2979ff; }
+.cr-sakia   .cr-name { color:#ff3d7f; }
+.cr-jayanta .cr-name { color:#795548; }
+.cr-adity   .cr-name { color:#ff9800; }
+
+/* NOTIF */
 .notif {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: var(--cream);
-  border: 5px solid var(--ink);
-  border-radius: 20px;
-  padding: 18px 36px;
-  font-family: 'Bangers', cursive;
-  font-size: 2rem;
-  letter-spacing: 2px;
-  text-align: center;
-  z-index: 999;
-  box-shadow: 8px 8px 0 var(--ink);
-  pointer-events: none;
-  animation: notifPop .45s cubic-bezier(.34,1.56,.64,1) forwards;
-  white-space: nowrap;
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0);
+  background:var(--cream); border:4px solid var(--ink); border-radius:18px;
+  padding:13px 26px; font-family:'Bangers',cursive;
+  font-size:clamp(1.3rem,5vw,1.9rem); letter-spacing:2px; text-align:center;
+  z-index:999; box-shadow:5px 5px 0 var(--ink); pointer-events:none;
+  animation:notifPop .4s cubic-bezier(.34,1.56,.64,1) forwards; white-space:nowrap;
 }
 @keyframes notifPop {
-  0%   { transform: translate(-50%,-50%) scale(0.2); opacity:0; }
-  60%  { transform: translate(-50%,-50%) scale(1.1); opacity:1; }
-  100% { transform: translate(-50%,-50%) scale(1);   opacity:1; }
+  0%{transform:translate(-50%,-50%) scale(.2);opacity:0}
+  60%{transform:translate(-50%,-50%) scale(1.08);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:1}
 }
-.notif.good { border-color: var(--green); color: #006622; }
-.notif.bad  { border-color: var(--red);   color: var(--red); }
+.notif.good { border-color:var(--green); color:#006622; }
+.notif.bad  { border-color:var(--red);   color:var(--red); }
 
-/* NPC move flash */
-.room.npc-just-moved {
-  animation: flashRoom .5s ease-out;
-}
-@keyframes flashRoom {
-  0%   { background-color: #fffde0 !important; }
-  100% { }
-}
-
-/* ======= END SCREEN ======= */
-#endScreen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-.end-emoji { font-size: clamp(4rem, 12vw, 7rem); margin-bottom: 10px; animation: bounce 1s ease-in-out infinite; }
-@keyframes bounce {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-12px); }
-}
-#endScreen h1 {
-  font-family: 'Bangers', cursive;
-  font-size: clamp(2.5rem, 9vw, 5.5rem);
-  letter-spacing: 4px;
-  text-shadow: 5px 5px 0 var(--ink);
-  margin-bottom: 10px;
-}
-#endScreen h1.win  { color: var(--yellow); }
-#endScreen h1.lose { color: var(--pink); }
-.end-sub {
-  font-family: 'Permanent Marker', cursive;
-  font-size: clamp(1rem, 3vw, 1.4rem);
-  color: #ffb3cc;
-  margin-bottom: 8px;
-  max-width: 420px;
-  line-height: 1.5;
-}
-.end-score {
-  font-family: 'Bangers', cursive;
-  font-size: 2rem;
-  color: var(--cream);
-  text-shadow: 3px 3px 0 var(--ink);
-  margin-bottom: 28px;
-}
-.replay-btn {
-  font-family: 'Bangers', cursive;
-  font-size: 1.6rem;
-  letter-spacing: 2px;
-  padding: 12px 44px;
-  background: var(--pink);
-  color: #fff;
-  border: 4px solid #fff;
-  border-radius: 18px;
-  cursor: pointer;
-  box-shadow: 6px 6px 0 var(--ink);
-  transition: transform .1s, box-shadow .1s;
-}
-.replay-btn:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 var(--ink); }
-.replay-btn:active { transform: translate(2px,2px); box-shadow: 3px 3px 0 var(--ink); }
+/* END */
+#endScreen { background:var(--ink); align-items:center; justify-content:center; text-align:center; padding:30px 20px; gap:10px; }
+.end-em { font-size:clamp(3.5rem,15vw,6rem); animation:bounce 1s ease-in-out infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+#endScreen h1 { font-family:'Bangers',cursive; font-size:clamp(2.5rem,12vw,5rem); letter-spacing:4px; text-shadow:4px 4px 0 var(--ink); }
+#endScreen h1.win  { color:var(--yellow); }
+#endScreen h1.lose { color:var(--pink); }
+.end-sub { font-family:'Permanent Marker',cursive; font-size:clamp(.88rem,3.5vw,1.25rem); color:#ffb3cc; max-width:340px; line-height:1.5; }
+.end-score { font-family:'Bangers',cursive; font-size:1.6rem; color:var(--cream); text-shadow:3px 3px 0 var(--ink); }
+.replay-btn { font-family:'Bangers',cursive; font-size:1.35rem; letter-spacing:2px; padding:12px 40px; background:var(--pink); color:#fff; border:4px solid #fff; border-radius:16px; cursor:pointer; box-shadow:5px 5px 0 var(--ink); margin-top:4px; transition:transform .1s; }
+.replay-btn:active { transform:scale(.95); }
 </style>
 </head>
 <body>
-<div id="selectScreen"></div>
-<div id="gameScreen"></div>
-<div id="endScreen"></div>
+
+<!-- SELECT -->
+<div id="selectScreen" class="screen active">
+  <div class="title-block">
+    <h1>💘 LOVE<br>&amp; CHAOS</h1>
+    <p>A soap opera. A puzzle. A disaster.</p>
+  </div>
+  <div class="char-grid" id="charGrid"></div>
+  <p class="select-tip">🏠 Tap 🟢 rooms to move • ⏳ Wait to hide • 3 lives</p>
+</div>
+
+<!-- GAME -->
+<div id="gameScreen" class="screen">
+  <div class="g-header">
+    <div class="g-player">
+      <span class="av" id="gAv"></span>
+      <span id="gName"></span>
+    </div>
+    <div class="g-hud">
+      <div class="pill">⭐<b id="scoreVal">0</b></div>
+      <div class="pill" id="livesVal">❤️❤️❤️</div>
+      <button class="g-menu" onclick="gotoSelect()">↩ Menu</button>
+    </div>
+  </div>
+  <div class="g-progress"><div class="g-prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="house-area">
+    <div class="house-hint">Tap a 🟢 room to move there</div>
+    <div class="house" id="houseGrid"></div>
+  </div>
+  <div class="bottom-panel">
+    <div class="tab-bar">
+      <button class="tab active" id="tab-btn-mission" onclick="switchTab('mission',this)">🎯 Mission</button>
+      <button class="tab" id="tab-btn-chars"   onclick="switchTab('chars',this)">👥 Peeps</button>
+      <button class="tab" id="tab-btn-log"     onclick="switchTab('log',this)">📻 Drama</button>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-mission"></div>
+      <div class="tab-pane"        id="tab-chars"></div>
+      <div class="tab-pane"        id="tab-log"></div>
+    </div>
+  </div>
+</div>
+
+<!-- END -->
+<div id="endScreen" class="screen">
+  <div class="end-em" id="endEm"></div>
+  <h1 id="endTitle"></h1>
+  <p class="end-sub" id="endSub"></p>
+  <p class="end-score" id="endScore"></p>
+  <button class="replay-btn" onclick="gotoSelect()">🔄 Play Again</button>
+</div>
 
 <script>
-// ===================== DATA =====================
-const ROOMS = [
-  { id:0, name:'Garden',      icon:'🌿', color:'#d4f5c0', adj:[1,3] },
-  { id:1, name:'Living Room', icon:'🛋️', color:'#fff3d0', adj:[0,2,4] },
-  { id:2, name:'Kitchen',     icon:'🍳', color:'#fffacc', adj:[1,5] },
-  { id:3, name:'Bathroom',    icon:'🚿', color:'#d0eeff', adj:[0,4] },
-  { id:4, name:'Hallway',     icon:'🚪', color:'#f5edd8', adj:[1,3,5] },
-  { id:5, name:'Bedroom',     icon:'🛏️', color:'#ffd6e7', adj:[2,4] },
+const ROOMS=[
+  {id:0,name:'Garden',    icon:'🌿',color:'#d4f5c0',adj:[1,3]},
+  {id:1,name:'Living Rm', icon:'🛋️',color:'#fff3d0',adj:[0,2,4]},
+  {id:2,name:'Kitchen',   icon:'🍳',color:'#fffacc',adj:[1,5]},
+  {id:3,name:'Bathroom',  icon:'🚿',color:'#d0eeff',adj:[0,4]},
+  {id:4,name:'Hallway',   icon:'🚪',color:'#f5edd8',adj:[1,3,5]},
+  {id:5,name:'Bedroom',   icon:'🛏️',color:'#ffd6e7',adj:[2,4]},
 ];
-
-const CHARS = {
-  moin:    { name:'Moin',    emoji:'🧔', color:'#2979ff', start:0 },
-  sakia:   { name:'Sakia',   emoji:'👩‍🦱', color:'#ff3d7f', start:2 },
-  jayanta: { name:'Jayanta', emoji:'👨‍💼', color:'#795548', start:5 },
-  adity:   { name:'Adity',   emoji:'👩‍🦰', color:'#ff9800', start:1 },
+const CHARS={
+  moin:   {name:'Moin',   emoji:'🧔',start:0},
+  sakia:  {name:'Sakia',  emoji:'👩‍🦱',start:2},
+  jayanta:{name:'Jayanta',emoji:'👨‍💼',start:5},
+  adity:  {name:'Adity',  emoji:'👩‍🦰',start:1},
 };
-
-const CFG = {
-  moin: {
-    cardClass: 'c-moin',
-    desc: [
-      '💌 Flirt with Sakia (when Jayanta is away)',
-      '💫 Chase Adity (when Sakia is away)',
+const CFG={
+  moin:{
+    cc:'c-moin',desc:['💌 Flirt with Sakia (no Jayanta)','💫 Chase Adity (no Sakia)'],
+    danger:'🚫 Avoid Jayanta!',
+    goals:[
+      {target:'sakia',text:'💌 Flirt with Sakia',pts:10,needAbsent:['jayanta']},
+      {target:'adity',text:'💫 Chase Adity',      pts:15,needAbsent:['sakia']},
     ],
-    danger: '🚫 Avoid Jayanta!',
-    goals: [
-      { target:'sakia',  text:'💌 Flirt with Sakia',  pts:10, needAbsent:['jayanta'] },
-      { target:'adity',  text:'💫 Chase Adity',        pts:15, needAbsent:['sakia'] },
-    ],
-    enemies: ['jayanta'],
-    winScore: 50,
-    wins:  ["Moin lives dangerously! 💌😏", "Two hearts, zero regrets!"],
-    loses: ["Jayanta was NOT happy.", "Moin should have hid in the Garden 🌿"],
+    enemies:['jayanta'],winScore:50,
+    wins:['Two hearts, zero regrets! 💌😏','Moin lives dangerously!'],
+    loses:['Jayanta was NOT happy.','Hide in the Garden next time 🌿'],
   },
-  sakia: {
-    cardClass: 'c-sakia',
-    desc: [
-      '💕 Love Moin (when Jayanta is away)',
-      '👊 Slap Jayanta (anytime!)',
-      '👊 Slap Adity (anytime!)',
+  sakia:{
+    cc:'c-sakia',desc:['💕 Love Moin (no Jayanta nearby)','👊 Slap Jayanta or Adity — anytime!'],
+    danger:"🚫 Don't get caught with Moin by Jayanta!",
+    goals:[
+      {target:'moin',   text:'💕 Love Moin',   pts:10,needAbsent:['jayanta']},
+      {target:'jayanta',text:'👊 Slap Jayanta',pts:15,needAbsent:[]},
+      {target:'adity',  text:'👊 Slap Adity',  pts:20,needAbsent:[]},
     ],
-    danger: '🚫 Don\'t get caught with Moin by Jayanta!',
-    goals: [
-      { target:'moin',    text:'💕 Love Moin',    pts:10, needAbsent:['jayanta'] },
-      { target:'jayanta', text:'👊 Slap Jayanta', pts:15, needAbsent:[] },
-      { target:'adity',   text:'👊 Slap Adity',   pts:20, needAbsent:[] },
-    ],
-    enemies: [],
-    specialCatch: { withChar:'moin', caughtBy:'jayanta', msg:"😱 Jayanta caught Sakia with Moin!" },
-    winScore: 55,
-    wins:  ["Sakia handled EVERYONE. Queen! 👑", "Absolute chaos, absolute victory! 👊💕"],
-    loses: ["Caught red-handed! 😳 The drama!", "Next time, check if Jayanta is nearby..."],
+    enemies:[],specialCatch:{withChar:'moin',caughtBy:'jayanta',msg:'😱 Jayanta caught Sakia with Moin!'},
+    winScore:55,
+    wins:['Sakia handled EVERYONE. Queen! 👑','Absolute chaos, absolute victory! 👊💕'],
+    loses:['Caught red-handed! 😳 The drama!','Check if Jayanta is nearby next time...'],
   },
-  adity: {
-    cardClass: 'c-adity',
-    desc: [
-      '💕 Love Jayanta in secret',
-      '🤫 Stay away from Sakia & Moin',
+  adity:{
+    cc:'c-adity',desc:['💕 Love Jayanta in secret','🤫 Avoid Sakia & Moin at all cost'],
+    danger:'🚫 Avoid Sakia & Moin!',
+    goals:[
+      {target:'jayanta',text:'💕 Love Jayanta',pts:10,needAbsent:['sakia']},
     ],
-    danger: '🚫 Avoid Sakia & Moin!',
-    goals: [
-      { target:'jayanta', text:'💕 Love Jayanta', pts:10, needAbsent:['sakia'] },
-    ],
-    enemies: ['sakia','moin'],
-    winScore: 40,
-    wins:  ["Adity & Jayanta, secretly in love 💕", "No one caught them... this time 😅"],
-    loses: ["Sakia found her. BIG mistake.", "Moin was too persistent 😤"],
+    enemies:['sakia','moin'],winScore:40,
+    wins:["Adity & Jayanta, secretly in love 💕","No one caught them... this time 😅"],
+    loses:["Sakia found her. BIG mistake.","Moin was too persistent 😤"],
   },
-  jayanta: {
-    cardClass: 'c-jayanta',
-    desc: [
-      '💕 Love Adity (when Sakia is away)',
-      '👊 Beat Moin (anytime!)',
+  jayanta:{
+    cc:'c-jayanta',desc:['💕 Love Adity (when Sakia is away)','👊 Beat Moin — anytime!'],
+    danger:'🚫 Avoid Sakia!',
+    goals:[
+      {target:'adity',text:'💕 Love Adity',pts:10,needAbsent:['sakia']},
+      {target:'moin', text:'👊 Beat Moin', pts:15,needAbsent:[]},
     ],
-    danger: '🚫 Avoid Sakia!',
-    goals: [
-      { target:'adity', text:'💕 Love Adity',  pts:10, needAbsent:['sakia'] },
-      { target:'moin',  text:'👊 Beat Moin',   pts:15, needAbsent:[] },
-    ],
-    enemies: ['sakia'],
-    winScore: 50,
-    wins:  ["Hypocrite of the year! 🏆 But you won!", "Jayanta wins... justice is dead 😂"],
-    loses: ["Sakia caught Jayanta. As expected.", "What goes around comes around, Jayanta 😬"],
+    enemies:['sakia'],winScore:50,
+    wins:['Hypocrite of the year! 🏆 But you won!','Jayanta wins... justice is dead 😂'],
+    loses:['Sakia caught Jayanta. As expected.','What goes around comes around 😬'],
   },
 };
 
-// ===================== STATE =====================
-let G = {};
-let npcTimer = null;
-let clickCool = false;
+let G={},npcTimer=null,clickCool=false;
 
-function newGame(player) {
-  G = {
-    phase: 'playing',
-    player,
-    pos: { moin:0, sakia:2, jayanta:5, adity:1 },
-    score: 0,
-    lives: 3,
-    log: [],
-  };
-  // stagger starts
-  G.pos[player] = CHARS[player].start;
+function buildSelect(){
+  document.getElementById('charGrid').innerHTML=Object.entries(CFG).map(([k,c])=>`
+    <div class="char-card ${c.cc}" onclick="startGame('${k}')">
+      <div class="c-avatar">${CHARS[k].emoji}</div>
+      <div class="c-name">${CHARS[k].name}</div>
+      <ul class="c-goals">${c.desc.map(d=>`<li>▸ ${d}</li>`).join('')}</ul>
+      <div class="c-danger">${c.danger}</div>
+    </div>
+  `).join('');
 }
 
-// ===================== SELECT =====================
-function renderSelect() {
-  clearNpcTimer();
-  const el = document.getElementById('selectScreen');
-  el.style.display = 'flex';
-  document.getElementById('gameScreen').style.display = 'none';
-  document.getElementById('endScreen').style.display = 'none';
-  el.style.flexDirection = 'column';
-  el.style.alignItems = 'center';
-  el.style.justifyContent = 'center';
-  el.style.minHeight = '100vh';
-  el.style.padding = '20px 16px 40px';
+function gotoSelect(){ clearNT(); show('selectScreen'); }
 
-  el.innerHTML = `
-    <div class="title-wrap">
-      <h1>💘 LOVE &amp; CHAOS</h1>
-      <div class="tagline">A soap opera. A puzzle. A disaster waiting to happen.</div>
-    </div>
-    <div class="char-grid">
-      ${Object.entries(CFG).map(([key, cfg]) => `
-        <div class="char-card ${cfg.cardClass}" onclick="startGame('${key}')">
-          <div class="c-avatar">${CHARS[key].emoji}</div>
-          <div class="c-name">${CHARS[key].name}</div>
-          <ul class="c-goals">${cfg.desc.map(d=>`<li>▸ ${d}</li>`).join('')}</ul>
-          <div class="c-danger">${cfg.danger}</div>
-        </div>
-      `).join('')}
-    </div>
-    <div class="select-footer" style="color:#ff9ebc; margin-top:18px;">
-      🏠 Navigate rooms • 🟢 Green = moveable • ⏳ Wait to let NPCs pass
-    </div>
-  `;
+function startGame(player){
+  G={phase:'playing',player,pos:{moin:0,sakia:2,jayanta:5,adity:1},score:0,lives:3,log:[]};
+  G.pos[player]=CHARS[player].start;
+  document.getElementById('gAv').textContent=CHARS[player].emoji;
+  document.getElementById('gName').textContent=CHARS[player].name;
+  show('gameScreen');
+  // reset tabs
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-btn-mission').classList.add('active');
+  document.getElementById('tab-mission').classList.add('active');
+
+  addLog('🎬 You are '+CHARS[player].name+'! Good luck...','info');
+  renderHouse(); updateHUD(); renderMission(); renderChars(); renderLog();
+  clearNT(); npcTimer=setInterval(doNpcMove,2400);
 }
 
-// ===================== GAME =====================
-function startGame(player) {
-  newGame(player);
-  document.getElementById('selectScreen').style.display = 'none';
-  document.getElementById('endScreen').style.display = 'none';
-  const gs = document.getElementById('gameScreen');
-  gs.style.display = 'flex';
-  gs.style.flexDirection = 'column';
-
-  addLog('🎬 You are ' + CHARS[player].name + '! Good luck...', 'info');
-  renderGameScreen();
-
-  clearNpcTimer();
-  npcTimer = setInterval(doNpcMove, 2400);
+function switchTab(name,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='log') renderLog();
+  if(name==='chars') renderChars();
 }
 
-function renderGameScreen() {
-  const p = G.player;
-  const cfg = CFG[p];
-  const winScore = cfg.winScore;
-  const pct = Math.min(100, Math.round(G.score / winScore * 100));
-
-  const livesStr = ['❤️❤️❤️','❤️❤️🖤','❤️🖤🖤','🖤🖤🖤'][3 - G.lives] || '🖤🖤🖤';
-
-  document.getElementById('gameScreen').innerHTML = `
-    <div class="game-header">
-      <div class="player-badge">
-        <span class="avatar">${CHARS[p].emoji}</span>
-        <span>${CHARS[p].name}</span>
-        <button class="menu-btn" onclick="renderSelect()">↩ Menu</button>
-      </div>
-      <div class="hud-right">
-        <div class="hud-pill">⭐ <span id="scoreVal">${G.score}</span></div>
-        <div class="hud-pill" id="livesVal">${livesStr}</div>
-      </div>
-    </div>
-    <div class="game-body">
-      <div class="house-wrap">
-        <div class="house-title">🏠 The House — tap a 🟢 room to move</div>
-        <div class="house" id="houseGrid"></div>
-      </div>
-      <div class="side-panel">
-        <div class="panel-box">
-          <h3>🎯 MISSION</h3>
-          ${cfg.goals.map(g=>`
-            <div class="goal-row active">▸ ${g.text} <b>+${g.pts}</b></div>
-          `).join('')}
-          <div class="danger-row">${cfg.danger}</div>
-          <div class="progress-wrap">
-            <div class="prog-label">Win at ${winScore} pts</div>
-            <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:${pct}%"></div></div>
-          </div>
-        </div>
-        <button class="wait-btn" onclick="doWait()">⏳ Wait / Lay Low</button>
-        <div class="panel-box">
-          <h3>📻 DRAMA LOG</h3>
-          <div class="event-log" id="evLog"></div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  renderHouse();
-  renderLog();
-}
-
-function renderHouse() {
-  const grid = document.getElementById('houseGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  const playerRoom = G.pos[G.player];
-  const reachable  = ROOMS[playerRoom].adj;
-
-  ROOMS.forEach(room => {
-    const isHere = room.id === playerRoom;
-    const canGo  = reachable.includes(room.id);
-
-    const charsHere = Object.entries(G.pos).filter(([,r])=>r===room.id).map(([k])=>k);
-
-    const cell = document.createElement('div');
-    cell.className = 'room';
-    cell.id = 'room-' + room.id;
-    cell.style.background = room.color;
-    if (isHere) cell.classList.add('current');
-    if (canGo)  cell.classList.add('reachable');
-
-    cell.innerHTML = `
-      <div class="room-icon">${room.icon}</div>
-      <div class="room-name">${room.name}</div>
-      ${isHere ? '<div class="here-badge">YOU</div>' : ''}
+function renderHouse(){
+  const grid=document.getElementById('houseGrid');
+  if(!grid) return;
+  grid.innerHTML='';
+  const pRoom=G.pos[G.player],reach=ROOMS[pRoom].adj;
+  ROOMS.forEach(r=>{
+    const isHere=r.id===pRoom,canGo=reach.includes(r.id);
+    const chars=Object.entries(G.pos).filter(([,rm])=>rm===r.id).map(([k])=>k);
+    const div=document.createElement('div');
+    div.className='room'; div.id='room-'+r.id; div.style.background=r.color;
+    if(isHere) div.classList.add('current');
+    if(canGo)  div.classList.add('reachable');
+    div.innerHTML=`
+      <div class="room-icon">${r.icon}</div>
+      <div class="room-name">${r.name}</div>
+      ${isHere?'<div class="you-badge">YOU</div>':''}
       <div class="room-chars">
-        ${charsHere.map(k=>`
-          <div class="char-token ${k===G.player?'is-player':''}">
-            ${CHARS[k].emoji}
-            <div class="tip">${CHARS[k].name}</div>
+        ${chars.map(k=>`
+          <div class="tok-wrap">
+            <span class="tok ${k===G.player?'me':''}">${CHARS[k].emoji}</span>
+            <span class="tok-name">${CHARS[k].name.substring(0,5)}</span>
           </div>
         `).join('')}
-      </div>
-    `;
-
-    if (canGo) cell.onclick = () => movePlayer(room.id);
-    grid.appendChild(cell);
+      </div>`;
+    if(canGo) div.onclick=()=>movePlayer(r.id);
+    grid.appendChild(div);
   });
 }
 
-function updateHUD() {
-  const s = document.getElementById('scoreVal');
-  const l = document.getElementById('livesVal');
-  const pf = document.getElementById('progFill');
-  if (s) s.textContent = G.score;
-  if (l) {
-    const arr = ['❤️❤️❤️','❤️❤️🖤','❤️🖤🖤','🖤🖤🖤'];
-    l.textContent = arr[3-G.lives] || '🖤🖤🖤';
-  }
-  if (pf) {
-    const pct = Math.min(100, Math.round(G.score / CFG[G.player].winScore * 100));
-    pf.style.width = pct + '%';
-  }
+function updateHUD(){
+  const s=document.getElementById('scoreVal'),l=document.getElementById('livesVal'),pf=document.getElementById('progFill');
+  if(s) s.textContent=G.score;
+  if(l) l.textContent=['❤️❤️❤️','❤️❤️🖤','❤️🖤🖤','🖤🖤🖤'][3-G.lives]||'🖤🖤🖤';
+  if(pf) pf.style.width=Math.min(100,Math.round(G.score/CFG[G.player].winScore*100))+'%';
 }
 
-// ===================== MOVEMENT =====================
-function movePlayer(roomId) {
-  if (G.phase !== 'playing' || clickCool) return;
-  clickCool = true;
-  setTimeout(() => clickCool = false, 350);
+function renderMission(){
+  const cfg=CFG[G.player];
+  document.getElementById('tab-mission').innerHTML=`
+    ${cfg.goals.map(g=>`<div class="goal-row">▸ ${g.text} <b>+${g.pts}pts</b></div>`).join('')}
+    <div class="danger-row">${cfg.danger}</div>
+    <button class="wait-btn" onclick="doWait()">⏳ Wait / Lay Low</button>
+  `;
+}
 
-  G.pos[G.player] = roomId;
-  checkInteractions();
-  renderHouse();
-  updateHUD();
+function renderChars(){
+  const el=document.getElementById('tab-chars');
+  if(!el) return;
+  el.innerHTML=Object.entries(CHARS).map(([k,c])=>`
+    <div class="char-row cr-${k}">
+      <span class="cr-em">${c.emoji}</span>
+      <div><div class="cr-name">${c.name}</div><div class="cr-loc">📍 ${ROOMS[G.pos[k]].name}</div></div>
+    </div>
+  `).join('');
+}
+
+function renderLog(){
+  const el=document.getElementById('tab-log');
+  if(!el) return;
+  el.innerHTML=G.log.slice(-14).reverse().map(e=>`<div class="ev ${e.type}">${e.text}</div>`).join('');
+}
+
+function addLog(t,type){ G.log.push({text:t,type}); if(G.log.length>30) G.log.shift(); }
+
+function movePlayer(rid){
+  if(G.phase!=='playing'||clickCool) return;
+  clickCool=true; setTimeout(()=>clickCool=false,300);
+  G.pos[G.player]=rid;
+  checkInteractions(); renderHouse(); updateHUD(); renderChars();
+  // auto-show drama log on bad events (handled in checkInteractions)
+}
+
+function doWait(){
+  if(G.phase!=='playing') return;
+  addLog('⏳ '+CHARS[G.player].name+' waits quietly...','info');
   renderLog();
 }
 
-function doWait() {
-  if (G.phase !== 'playing') return;
-  addLog('⏳ ' + CHARS[G.player].name + ' waits quietly...', 'info');
-  renderLog();
-}
-
-// ===================== INTERACTIONS =====================
-function checkInteractions() {
-  if (G.phase !== 'playing') return;
-  const p = G.player;
-  const cfg = CFG[p];
-  const pRoom = G.pos[p];
-
-  const others = Object.entries(G.pos)
-    .filter(([k,r]) => k !== p && r === pRoom)
-    .map(([k]) => k);
-
-  if (!others.length) return;
-
-  // Special: Sakia caught with Moin by Jayanta
-  if (cfg.specialCatch) {
-    const sc = cfg.specialCatch;
-    if (others.includes(sc.withChar) && others.includes(sc.caughtBy)) {
-      addLog('😱 ' + sc.msg, 'bad');
-      loseLife(sc.msg);
-      return;
+function checkInteractions(){
+  if(G.phase!=='playing') return;
+  const p=G.player,cfg=CFG[p],pRoom=G.pos[p];
+  const others=Object.entries(G.pos).filter(([k,r])=>k!==p&&r===pRoom).map(([k])=>k);
+  if(!others.length){ renderLog(); return; }
+  if(cfg.specialCatch){
+    const sc=cfg.specialCatch;
+    if(others.includes(sc.withChar)&&others.includes(sc.caughtBy)){
+      addLog('😱 '+sc.msg,'bad'); renderLog(); loseLife(); return;
     }
   }
-
-  // Enemy check
-  for (const e of cfg.enemies) {
-    if (others.includes(e)) {
-      const msg = '💀 ' + CHARS[e].name + ' caught ' + CHARS[p].name + '!';
-      addLog(msg, 'bad');
-      loseLife(msg);
-      return;
+  for(const e of cfg.enemies){
+    if(others.includes(e)){
+      addLog('💀 '+CHARS[e].name+' caught '+CHARS[p].name+'!','bad'); renderLog(); loseLife(); return;
     }
   }
-
-  // Goal check
-  for (const goal of cfg.goals) {
-    if (!others.includes(goal.target)) continue;
-    const blocked = goal.needAbsent.some(a => others.includes(a));
-    if (blocked) {
-      addLog('😬 Can\'t do that — someone is watching!', 'info');
-      continue;
-    }
-    // Success!
-    G.score += goal.pts;
-    addLog('✅ ' + goal.text + '! +' + goal.pts + ' pts', 'good');
-    showNotif('✅ ' + goal.text + '!', 'good');
-
-    // Target flees to adjacent room
-    const tRoom = G.pos[goal.target];
-    const flee  = ROOMS[tRoom].adj;
-    G.pos[goal.target] = flee[Math.floor(Math.random() * flee.length)];
-
-    if (G.score >= CFG[G.player].winScore) {
-      setTimeout(() => endGame(true), 600);
-    }
+  for(const goal of cfg.goals){
+    if(!others.includes(goal.target)) continue;
+    if(goal.needAbsent.some(a=>others.includes(a))){ addLog('😬 Someone is watching!','info'); renderLog(); continue; }
+    G.score+=goal.pts;
+    addLog('✅ '+goal.text+'! +'+goal.pts+' pts','good');
+    renderLog(); showNotif('✅ '+goal.text+'!','good');
+    const flee=ROOMS[G.pos[goal.target]].adj;
+    G.pos[goal.target]=flee[Math.floor(Math.random()*flee.length)];
+    updateHUD();
+    if(G.score>=CFG[G.player].winScore){ setTimeout(()=>endGame(true),600); }
     break;
   }
 }
 
-function checkNpcLand() {
-  if (G.phase !== 'playing') return;
-  const p = G.player;
-  const cfg = CFG[p];
-  const pRoom = G.pos[p];
-
-  const others = Object.entries(G.pos)
-    .filter(([k,r]) => k !== p && r === pRoom)
-    .map(([k]) => k);
-
-  if (!others.length) return;
-
-  if (cfg.specialCatch) {
-    const sc = cfg.specialCatch;
-    if (others.includes(sc.withChar) && others.includes(sc.caughtBy)) {
-      addLog('😱 ' + sc.msg, 'bad');
-      loseLife(sc.msg);
-      return;
+function checkNpcLand(){
+  if(G.phase!=='playing') return;
+  const p=G.player,cfg=CFG[p],pRoom=G.pos[p];
+  const others=Object.entries(G.pos).filter(([k,r])=>k!==p&&r===pRoom).map(([k])=>k);
+  if(!others.length) return;
+  if(cfg.specialCatch){
+    const sc=cfg.specialCatch;
+    if(others.includes(sc.withChar)&&others.includes(sc.caughtBy)){
+      addLog('😱 '+sc.msg,'bad'); renderLog(); loseLife(); return;
     }
   }
-
-  for (const e of cfg.enemies) {
-    if (others.includes(e)) {
-      const msg = '💀 ' + CHARS[e].name + ' walked in!';
-      addLog(msg, 'bad');
-      loseLife(msg);
-      return;
+  for(const e of cfg.enemies){
+    if(others.includes(e)){
+      addLog('💀 '+CHARS[e].name+' walked in!','bad'); renderLog(); loseLife(); return;
     }
   }
 }
 
-function loseLife(msg) {
-  G.lives--;
-  showNotif('💔 BUSTED!', 'bad');
-
-  // Teleport player to safety
-  G.pos[G.player] = safeRoom();
-  addLog('🚨 -1 life! Teleported to safety.', 'bad');
-
-  if (G.lives <= 0) {
-    setTimeout(() => endGame(false), 700);
-  } else {
-    renderHouse();
-    updateHUD();
-    renderLog();
-  }
+function loseLife(){
+  G.lives--; showNotif('💔 BUSTED!','bad');
+  G.pos[G.player]=safeRoom();
+  addLog('🚨 -1 life! Moved to safety.','bad');
+  if(G.lives<=0){ setTimeout(()=>endGame(false),700); }
+  else{ renderHouse(); updateHUD(); renderLog(); }
 }
 
-function safeRoom() {
-  const cfg = CFG[G.player];
-  for (let i = 0; i < ROOMS.length; i++) {
-    const others = Object.entries(G.pos)
-      .filter(([k,r]) => k !== G.player && r === i)
-      .map(([k]) => k);
-    if (cfg.enemies.every(e => !others.includes(e))) return i;
+function safeRoom(){
+  const cfg=CFG[G.player];
+  for(let i=0;i<ROOMS.length;i++){
+    const o=Object.entries(G.pos).filter(([k,r])=>k!==G.player&&r===i).map(([k])=>k);
+    if(cfg.enemies.every(e=>!o.includes(e))) return i;
   }
   return 0;
 }
 
-// ===================== NPC MOVEMENT =====================
-function doNpcMove() {
-  if (G.phase !== 'playing') return;
-
-  const npcs = Object.keys(CHARS).filter(k => k !== G.player);
-  const movedRooms = new Set();
-
-  npcs.forEach(npc => {
-    const cur = G.pos[npc];
-    const adj = ROOMS[cur].adj;
-    const nCfg = CFG[npc];
-
-    // 35% chance: move toward first goal's target
+function doNpcMove(){
+  if(G.phase!=='playing') return;
+  const npcs=Object.keys(CHARS).filter(k=>k!==G.player),moved=new Set();
+  npcs.forEach(npc=>{
+    const adj=ROOMS[G.pos[npc]].adj,ncfg=CFG[npc];
     let next;
-    if (Math.random() < 0.35 && nCfg.goals.length) {
-      const tgt = nCfg.goals[0].target;
-      if (tgt !== G.player) {
-        const tgtRoom = G.pos[tgt];
-        const towards = adj.find(r => r === tgtRoom);
-        next = towards !== undefined ? towards : adj[Math.floor(Math.random() * adj.length)];
-      } else {
-        next = adj[Math.floor(Math.random() * adj.length)];
-      }
-    } else {
-      next = adj[Math.floor(Math.random() * adj.length)];
-    }
-
-    G.pos[npc] = next;
-    movedRooms.add(next);
-    addLog('👟 ' + CHARS[npc].name + ' → ' + ROOMS[next].name, 'npc');
+    if(Math.random()<.38&&ncfg.goals.length){
+      const tgt=ncfg.goals[0].target;
+      if(tgt!==G.player){
+        const towards=adj.find(r=>r===G.pos[tgt]);
+        next=towards!==undefined?towards:adj[Math.floor(Math.random()*adj.length)];
+      } else next=adj[Math.floor(Math.random()*adj.length)];
+    } else next=adj[Math.floor(Math.random()*adj.length)];
+    G.pos[npc]=next; moved.add(next);
+    addLog('👟 '+CHARS[npc].name+' → '+ROOMS[next].name,'npc');
   });
-
-  checkNpcLand();
-  renderHouse();
-  renderLog();
-
-  // Flash moved-to rooms briefly
-  movedRooms.forEach(rid => {
-    const el = document.getElementById('room-' + rid);
-    if (el) {
-      el.classList.add('npc-just-moved');
-      setTimeout(() => el && el.classList.remove('npc-just-moved'), 500);
-    }
+  checkNpcLand(); renderHouse(); renderChars(); renderLog();
+  moved.forEach(rid=>{
+    const el=document.getElementById('room-'+rid);
+    if(el){ el.classList.add('npc-flash'); setTimeout(()=>el&&el.classList.remove('npc-flash'),450); }
   });
 }
 
-// ===================== LOG =====================
-function addLog(text, type) {
-  G.log.push({ text, type });
-  if (G.log.length > 25) G.log.shift();
-}
-function renderLog() {
-  const el = document.getElementById('evLog');
-  if (!el) return;
-  el.innerHTML = G.log.slice(-10).reverse().map(e =>
-    `<div class="ev ${e.type}">${e.text}</div>`
-  ).join('');
-}
-
-// ===================== NOTIF =====================
-function showNotif(text, type) {
+function showNotif(text,type){
   document.querySelectorAll('.notif').forEach(n=>n.remove());
-  const n = document.createElement('div');
-  n.className = 'notif ' + type;
-  n.textContent = text;
-  document.body.appendChild(n);
-  setTimeout(() => n.remove(), 1300);
+  const n=document.createElement('div');
+  n.className='notif '+type; n.textContent=text;
+  document.body.appendChild(n); setTimeout(()=>n.remove(),1200);
 }
 
-// ===================== END =====================
-function endGame(won) {
-  clearNpcTimer();
-  G.phase = won ? 'won' : 'lost';
-
-  const cfg = CFG[G.player];
-  const msgs = won ? cfg.wins : cfg.loses;
-  const msg = msgs[Math.floor(Math.random() * msgs.length)];
-
-  document.getElementById('selectScreen').style.display = 'none';
-  document.getElementById('gameScreen').style.display = 'none';
-
-  const es = document.getElementById('endScreen');
-  es.style.display = 'flex';
-  es.style.flexDirection = 'column';
-  es.style.alignItems = 'center';
-  es.style.justifyContent = 'center';
-  es.style.minHeight = '100vh';
-
-  es.innerHTML = `
-    <div class="end-emoji">${won ? '🏆' : '💔'}</div>
-    <h1 class="${won?'win':'lose'}">${won ? 'YOU WIN!' : 'GAME OVER'}</h1>
-    <p class="end-sub">${msg}</p>
-    <p class="end-score">Score: ${G.score} pts</p>
-    <button class="replay-btn" onclick="renderSelect()">🔄 Play Again</button>
-  `;
+function endGame(won){
+  clearNT(); G.phase=won?'won':'lost';
+  const cfg=CFG[G.player],msgs=won?cfg.wins:cfg.loses;
+  document.getElementById('endEm').textContent=won?'🏆':'💔';
+  const t=document.getElementById('endTitle');
+  t.textContent=won?'YOU WIN!':'GAME OVER'; t.className=won?'win':'lose';
+  document.getElementById('endSub').textContent=msgs[Math.floor(Math.random()*msgs.length)];
+  document.getElementById('endScore').textContent='Score: '+G.score+' pts';
+  show('endScreen');
 }
 
-function clearNpcTimer() {
-  if (npcTimer) { clearInterval(npcTimer); npcTimer = null; }
-}
+function clearNT(){ if(npcTimer){clearInterval(npcTimer);npcTimer=null;} }
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 
-// ===================== BOOT =====================
-renderSelect();
+buildSelect();
 </script>
 </body>
 </html>
